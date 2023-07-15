@@ -1,6 +1,6 @@
 # ManagementPortal
 
-REST API to web application management of inventory, products, customers and orders.
+REST API for management of inventory, products, customers and orders for a company or business.
 
 ## About
 
@@ -9,8 +9,6 @@ REST API to web application management of inventory, products, customers and ord
 - Using SQL with a PostgreSQL database
 
 - Unit testing with xUnit
-
-- End-to-end testing with Cypress
 
 ## Requeriments
 
@@ -42,7 +40,7 @@ dotnet ef --startup-project ../ManagementPortal.Api database update
 Run API project
 
 ```bash
-cd SolarCoffee.Api/
+cd ManagementPortal.Api/
 dotnet run
 ```
 
