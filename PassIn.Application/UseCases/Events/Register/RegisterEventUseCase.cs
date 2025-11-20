@@ -24,6 +24,5 @@ public class RegisterEventUseCase(PassInDbContext context)
         {
             Id = entity.Id
         };
-
     }
 }

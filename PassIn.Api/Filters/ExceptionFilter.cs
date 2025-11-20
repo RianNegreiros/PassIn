@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+
 using PassIn.Communication.Responses;
 using PassIn.Exceptions;
 
@@ -9,9 +10,9 @@ public class ExceptionFilter : IExceptionFilter
 {
     public void OnException(ExceptionContext context)
     {
-        if(context.Exception is PassInException) 
+        if (context.Exception is PassInException)
             HandleProjectException(context);
-        else 
+        else
             ThrowUnknownError(context);
     }
 
@@ -24,12 +25,9 @@ public class ExceptionFilter : IExceptionFilter
 
     private void HandleProjectException(ExceptionContext context)
     {
+        if (context.Exception is not NotFoundException) return;
+        context.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+        context.Result = new NotFoundObjectResult(new ResponseErrorJson(context.Exception.Message));
 
-        if (context.Exception is NotFoundException)
-        {
-            context.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
-            context.Result = new NotFoundObjectResult(new ResponseErrorJson(context.Exception.Message));
-        }
-            
     }
 }
