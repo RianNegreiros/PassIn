@@ -10,9 +10,7 @@ namespace PassIn.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class EventsController(
-        GetEventByIdUseCase getEventByIdUseCase
-        ) : ControllerBase
+public class EventsController() : ControllerBase
 {
     [HttpPost]
     [ProducesResponseType(typeof(ResponseRegisterEventJson), StatusCodes.Status201Created)]
@@ -43,7 +41,9 @@ public class EventsController(
     [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status404NotFound)]
     public IActionResult GetById(Guid id)
     {
-        var response = getEventByIdUseCase.Execute(id);
+        var useCase = new GetEventByIdUseCase();
+
+        var response = useCase.Execute(id);
 
         return Ok(response);
     }
