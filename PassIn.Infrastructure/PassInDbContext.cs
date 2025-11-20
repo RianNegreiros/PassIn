@@ -10,6 +10,6 @@ public class PassInDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("Data Source=/Users/rian/Downloads/PassInDb.db");
+        optionsBuilder.UseSqlite("Data Source=./Database/PassInDb.db");
     }
 }

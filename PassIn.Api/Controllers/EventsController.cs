@@ -4,14 +4,14 @@ using PassIn.Application.UseCases.Events.GetById;
 using PassIn.Application.UseCases.Events.Register;
 using PassIn.Communication.Requests;
 using PassIn.Communication.Responses;
+using PassIn.Exceptions;
 
 namespace PassIn.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
 public class EventsController(
-        GetEventByIdUseCase getEventByIdUseCase,
-        RegisterEventUseCase registerEventUseCase
+        GetEventByIdUseCase getEventByIdUseCase
         ) : ControllerBase
 {
     [HttpPost]
@@ -19,9 +19,22 @@ public class EventsController(
     [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
     public IActionResult Register([FromBody] RequestEventJson request)
     {
-        var response = registerEventUseCase.Execute(request);
+        try
+        {
+            var useCase = new RegisterEventUseCase();
 
-        return Created(string.Empty, response);
+            var response = useCase.Execute(request);
+
+            return Created(string.Empty, response);
+        }
+        catch (PassInException ex)
+        {
+            return BadRequest(new ResponseErrorJson(ex.Message));
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new ResponseErrorJson("Unknown error"));
+        }
     }
 
     [HttpGet]
