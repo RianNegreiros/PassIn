@@ -20,14 +20,19 @@ public class ExceptionFilter : IExceptionFilter
     {
         context.HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
         context.Result = new ObjectResult(new ResponseErrorJson("Unknown error"));
-
     }
 
     private void HandleProjectException(ExceptionContext context)
     {
-        if (context.Exception is not NotFoundException) return;
-        context.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
-        context.Result = new NotFoundObjectResult(new ResponseErrorJson(context.Exception.Message));
-
+        if (context.Exception is NotFoundException)
+        {
+            context.HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+            context.Result = new NotFoundObjectResult(new ResponseErrorJson(context.Exception.Message));
+        }
+        else if (context.Exception is ErrorOnValidationException)
+        {
+            context.HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+            context.Result = new BadRequestObjectResult(new ResponseErrorJson(context.Exception.Message));
+        }
     }
 }
