@@ -13,7 +13,7 @@ public class GetEventByIdUseCase
         var entity = dbContext.Events.FirstOrDefault(e => e.Id == id);
 
         if (entity is null)
-            throw new PassInException("Event not found.");
+            throw new NotFoundException("Event not found.");
 
 
         return new ResponseEventJson

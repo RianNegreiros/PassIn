@@ -7,6 +7,7 @@ namespace PassIn.Infrastructure;
 public class PassInDbContext : DbContext
 {
     public DbSet<Event> Events { get; set; } = null!;
+    public DbSet<Attendee> Attendees { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
