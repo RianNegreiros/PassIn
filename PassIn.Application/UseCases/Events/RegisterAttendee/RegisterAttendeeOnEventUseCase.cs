@@ -18,7 +18,10 @@ public class RegisterAttendeeOnEventUseCase
 
         var entity = new Attendee
         {
-            Email = request.Email, Name = request.Name, Event_Id = id, Created_At = DateTime.UtcNow
+            Email = request.Email,
+            Name = request.Name,
+            Event_Id = id,
+            Created_At = DateTime.UtcNow
         };
 
         _dbContext.Attendees.Add(entity);
@@ -33,10 +36,10 @@ public class RegisterAttendeeOnEventUseCase
 
         if (entity is null)
             throw new NotFoundException("Event not found.");
-        
+
         if (string.IsNullOrWhiteSpace(request.Name))
             throw new ErrorOnValidationException("The name is invalid.");
-        
+
         if (!EmailIsValid(request.Email))
             throw new ErrorOnValidationException("The e-mail is invalid.");
 
@@ -46,10 +49,10 @@ public class RegisterAttendeeOnEventUseCase
 
         if (attendeesAlreadyRegistered)
             throw new ErrorOnValidationException("You can not register twice on the same event");
-        
+
         var attendeesOnEvent = _dbContext.Attendees.Count(e => e.Event_Id == id);
 
-        if (attendeesOnEvent >= entity.Maximum_Attendees)
+        if (attendeesOnEvent == entity.Maximum_Attendees)
             throw new ErrorOnValidationException("Maximum attendees exceeded");
     }
 

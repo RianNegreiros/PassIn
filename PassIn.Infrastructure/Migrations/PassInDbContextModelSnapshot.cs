@@ -39,7 +39,29 @@ namespace PassIn.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Event_Id");
+
                     b.ToTable("Attendees");
+                });
+
+            modelBuilder.Entity("PassIn.Infrastructure.Entities.CheckIn", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("Attendee_Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Created_At")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Attendee_Id")
+                        .IsUnique();
+
+                    b.ToTable("CheckIns");
                 });
 
             modelBuilder.Entity("PassIn.Infrastructure.Entities.Event", b =>
@@ -66,6 +88,36 @@ namespace PassIn.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("PassIn.Infrastructure.Entities.Attendee", b =>
+                {
+                    b.HasOne("PassIn.Infrastructure.Entities.Event", null)
+                        .WithMany("Attendees")
+                        .HasForeignKey("Event_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PassIn.Infrastructure.Entities.CheckIn", b =>
+                {
+                    b.HasOne("PassIn.Infrastructure.Entities.Attendee", "Attendee")
+                        .WithOne("CheckIn")
+                        .HasForeignKey("PassIn.Infrastructure.Entities.CheckIn", "Attendee_Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Attendee");
+                });
+
+            modelBuilder.Entity("PassIn.Infrastructure.Entities.Attendee", b =>
+                {
+                    b.Navigation("CheckIn");
+                });
+
+            modelBuilder.Entity("PassIn.Infrastructure.Entities.Event", b =>
+                {
+                    b.Navigation("Attendees");
                 });
 #pragma warning restore 612, 618
         }

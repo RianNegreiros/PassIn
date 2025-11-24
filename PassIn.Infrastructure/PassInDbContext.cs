@@ -8,6 +8,7 @@ public class PassInDbContext : DbContext
 {
     public DbSet<Event> Events { get; set; } = null!;
     public DbSet<Attendee> Attendees { get; set; } = null!;
+    public DbSet<CheckIn> CheckIns { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
